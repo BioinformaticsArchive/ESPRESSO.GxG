@@ -1,0 +1,17 @@
+Package: ESPRESSO.GxG
+Type: Package
+Title: Power Analysis and Sample Size Calculation for a gene-gene
+    interaction model
+Version: 1.0
+Date: 2013-04-01
+Author: Amadou Gaye
+Maintainer: Amadou Gaye <amadou.gaye@bristol.ac.uk>
+Description: The package allows for the Estimation of Sample-size and Power by
+    Exploring Simulated Study Outcomes for an interaction model where the
+    covariates are two genetic variants (SNPs), an interaction term.
+    It supports simulation-based power calculation for stand-alone
+    case-control studies and for case-control analyses nested in cohort studies,
+    that take account of realistic
+    assessment error.
+License: GPL-3
+LazyLoad: yes
