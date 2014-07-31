@@ -87,7 +87,7 @@ block.size <- 20000
 
 # DECLARE MATRIX THAT STORE THE RESULTS FOR EACH SCENARIO (ONE PER SCENARIO PER ROW)
 output.file <- "output.csv"
-output.matrix <- matrix(numeric(0), ncol=32)
+output.matrix <- matrix(numeric(0), ncol=38)
 column.names <- c(colnames(s.parameters), "exceeded.sample.size?", "numcases.required", "numcontrols.required", 
                  "numsubjects.required", "empirical.power", "modelled.power", "estimated.OR", "estimated.effect")
 write(t(column.names),output.file,dim(output.matrix)[2],append=TRUE,sep=";")
@@ -239,7 +239,7 @@ for(j in c(scenarios2run))
                      critical.res[[6]], critical.res[[7]], critical.res[[8]])
    }else{
       mod <- "quantitative"
-      inparams [c(6,7,9,13,16,17,21,27)] <- "NA"
+      inparams [c(4,5,7,9,13,16,17,21,27)] <- "NA"
       inputs <- inparams
       outputs <- c("NA", "NA", "NA", critical.res[[3]], critical.res[[4]], critical.res[[5]], 
                    critical.res[[6]], critical.res[[7]])
