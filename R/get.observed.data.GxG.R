@@ -12,7 +12,7 @@
 #' @keywords internal
 #' @author Gaye A
 #'
-get.observed.data.GxE <-
+get.observed.data.GxG <-
 function(data=NULL,g1.error=NULL,g1.model=NULL,freq1=NULL,
          g2.error=NULL,g2.model=NULL,freq2=NULL)
 {

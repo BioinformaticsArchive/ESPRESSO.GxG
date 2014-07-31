@@ -1,10 +1,10 @@
-\name{sim.pheno.qtl.GxE}
-\alias{sim.pheno.qtl.GxE}
+\name{sim.pheno.qtl.GxG}
+\alias{sim.pheno.qtl.GxG}
 \title{Simulates continuous outcome data}
 \usage{
-sim.pheno.qtl.GxE(numsubjects = NULL, pheno.mean = NULL, pheno.sd = NULL,
-  genotype = NULL, geno.efkt = NULL, environment = NULL,
-  env.efkt = NULL, interaction = NULL, int.efkt = NULL)
+sim.pheno.qtl.GxG(numsubjects = NULL, pheno.mean = NULL, pheno.sd = NULL,
+  genotype1 = NULL, geno1.efkt = NULL, genotype2 = NULL,
+  geno2.efkt = NULL, interaction = NULL, int.efkt = NULL)
 }
 \arguments{
   \item{num.subjects}{Number of subjects to simulate}
@@ -13,17 +13,15 @@ sim.pheno.qtl.GxE(numsubjects = NULL, pheno.mean = NULL, pheno.sd = NULL,
 
   \item{pheno.sd}{standard deviation}
 
-  \item{genotype}{Genotype}
+  \item{genotype1}{Genotypes of the 1st variant}
 
-  \item{geno.efkt}{Effects if the genetic variants}
+  \item{genotype2}{Genotypes of the 2nd variant}
 
-  \item{environment}{Exposure data for environment}
+  \item{geno1.efkt}{Effects of the 1st genetic variant}
 
-  \item{env.efkt}{Effects of the environmental determiants}
+  \item{geno2.efkt}{Effects of the 2nd genetic variant}
 
-  \item{interaction}{Effect model: main effects=0,
-  Gene-Environment interaction=1, Gene-Gene interaction=2
-  and Environment-Enviroment interaction=3}
+  \item{interaction}{Effect data}
 
   \item{int.efkt}{Interaction effect}
 }

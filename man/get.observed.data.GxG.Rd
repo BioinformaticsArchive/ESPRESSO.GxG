@@ -1,8 +1,8 @@
-\name{get.observed.data.GxE}
-\alias{get.observed.data.GxE}
+\name{get.observed.data.GxG}
+\alias{get.observed.data.GxG}
 \title{Generates exposure data with some error}
 \usage{
-get.observed.data.GxE(data = NULL, g1.error = NULL, g1.model = NULL,
+get.observed.data.GxG(data = NULL, g1.error = NULL, g1.model = NULL,
   freq1 = NULL, g2.error = NULL, g2.model = NULL, freq2 = NULL)
 }
 \arguments{

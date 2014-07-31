@@ -7,16 +7,12 @@
 #' @param ncontrols Number of controls to simulate
 #' @param max.sample.size Maximum number of observations allowed
 #' @param pheno.prev Prevalence of the binary outcome
-#' @param freq Minor allele frequency
-#' @param g.model Genetic model; 0 for binary and 1 for continuous
-#' @param g.OR Odds ratios of the genetic determinants
-#' @param e.model Model of the environmental exposure
-#' @param e.prev Prevelance of the environmental determinates
-#' @param e.mean Mean under quantitative-normal model
-#' @param e.sd Standard deviation under quantitative-normal model
-#' @param e.low.lim Lower limit under quantitative-uniform model
-#' @param e.up.lim Upper limit under quantitative-uniform model
-#' @param e.OR Odds ratios of the environmental determinants
+#' @param freq1 Minor allele frequency of the 1st genetic determinant
+#' @param g1.model Genetic model of the 1st genetic determinant; 0 for binary and 1 for additive
+#' @param g1.OR Odds ratios of the 1st genetic determinant
+#' @param freq2 Minor allele frequency of the 2st genetic determinant
+#' @param g2.model Genetic model of the 2st genetic determinant; 0 for binary and 1 for additive
+#' @param g2.OR Odds ratios of the 2st genetic determinant
 #' @param i.OR Odds ration of the interaction
 #' @param b.OR Baseline odds ratio for subject on 95 percent population 
 #' centile versus 5 percentile. This parameter reflects the heterogeneity in disease 
@@ -27,10 +23,10 @@
 #' @keywords internal
 #' @author Gaye A.
 #'
-sim.CC.data.GxE <-
+sim.CC.data.GxG <-
 function(n=NULL, ncases=NULL, ncontrols=NULL, max.sample.size=NULL, pheno.prev=NULL,
-freq=NULL, g.model=NULL, g.OR=NULL, e.model=NULL, e.prev=NULL, e.mean=NULL, e.sd=NULL, 
-e.low.lim=NULL, e.up.lim=NULL, e.OR=NULL, i.OR=NULL, b.OR=NULL, ph.error=NULL)
+freq1=NULL, g1.model=NULL, g1.OR=NULL, freq2=NULL, g2.model=NULL, g2.OR=NULL, 
+i.OR=NULL, b.OR=NULL, ph.error=NULL)
 {
    # SET UP ZEROED COUNT VECTORS TO DETERMINE WHEN ENOUGH CASES AND CONTROLS HAVE BEEN GENERATED
    complete <- 0
@@ -40,7 +36,7 @@ e.low.lim=NULL, e.up.lim=NULL, e.OR=NULL, i.OR=NULL, b.OR=NULL, ph.error=NULL)
    block <- 0
 
    # SET UP A MATRIX TO STORE THE GENERATED DATA
-   sim.matrix <- matrix(numeric(0), ncol=6)
+   sim.matrix <- matrix(numeric(0), ncol=8)
 
    # SET LOOP COUNTER
    numloops <- 0
@@ -50,18 +46,20 @@ e.low.lim=NULL, e.up.lim=NULL, e.OR=NULL, i.OR=NULL, b.OR=NULL, ph.error=NULL)
    while(complete==0 && complete.absolute==0)
      {
 
-       # GENERATE THE TRUE GENOTYPE DATA
-       geno.data <- sim.geno.data(num.obs=n, geno.model=g.model, MAF=freq)
-       allele.A <- geno.data$allele.A
-       allele.B <- geno.data$allele.B
-       geno <- geno.data$genotype
+       # GENERATE THE TRUE GENOTYPE DATA FOR THE 1ST DETERMINANT
+       geno1.data <- sim.geno.data(num.obs=n, geno.model=g1.model, MAF=freq1)
+       allele.A1 <- geno1.data$allele.A
+       allele.B1 <- geno1.data$allele.B
+       geno1 <- geno1.data$genotype
      
-       # GENERATE THE TRUE ENVIRONMEANTAL EXPOSURE DATA
-       env <- sim.env.data(num.obs=n, env.model=e.model, env.prev=e.prev, env.mean=e.mean, 
-                                   env.sd=e.sd, env.low.lim=e.low.lim,env.up.lim=e.up.lim)
+       # GENERATE THE TRUE GENOTYPE DATA FOR THE 2ST DETERMINANT
+       geno2.data <- sim.geno.data(num.obs=n, geno.model=g2.model, MAF=freq2)
+       allele.A2 <- geno2.data$allele.A
+       allele.B2 <- geno2.data$allele.B
+       geno2 <- geno2.data$genotype
        
        # GENERATE THE TRUE INTERACTION DATA
-       int <- geno*env       
+       int <- geno1 * geno2       
 
        # GENERATE SUBJECT EFFECT DATA THAT REFLECTS BASELINE RISK: 
        # NORMALLY DISTRIBUTED RANDOM EFFECT VECTOR WITH APPROPRIATE 
@@ -69,9 +67,9 @@ e.low.lim=NULL, e.up.lim=NULL, e.OR=NULL, i.OR=NULL, b.OR=NULL, ph.error=NULL)
        s.effect.data <- sim.subject.data(n, b.OR)
 					  
        # GENERATE THE TRUE OUTCOME DATA
-       pheno.data <- sim.pheno.bin.GxE(num.obs=n, disease.prev=pheno.prev, genotype=geno, environment=env, 
-                                       interaction=int, subject.effect.data=s.effect.data, geno.OR=g.OR, 
-                                       env.OR=e.OR, int.OR=i.OR)
+       pheno.data <- sim.pheno.bin.GxG(num.obs=n, disease.prev=pheno.prev, genotype1=geno1, genotype2=geno2, 
+                                       interaction=int, subject.effect.data=s.effect.data, geno1.OR=g1.OR, 
+                                       geno2.OR=g1.OR, int.OR=i.OR)
        true.phenotype <- pheno.data
        
        # GENERATE THE OBSERVED OUTCOME DATA FROM WHICH WE SELECT CASES AND CONTROLS
@@ -80,7 +78,7 @@ e.low.lim=NULL, e.up.lim=NULL, e.OR=NULL, i.OR=NULL, b.OR=NULL, ph.error=NULL)
        
        # STORE THE TRUE OUTCOME, GENETIC AND ENVIRONMENT AND ALLELE DATA IN AN OUTPUT MATRIX 
        # WHERE EACH ROW HOLDS THE RECORDS OF ONE INDIVUDAL
-       sim.matrix.temp <- cbind(pheno,geno,allele.A,allele.B,env,int)
+       sim.matrix.temp <- cbind(pheno,geno1,allele.A1,allele.B1,geno2,allele.A2,allele.B2,int)
 
        # UPDATE THE MATRIX THAT HOLDS ALL THE DATA GENERATED SO FAR, AFTER EACH LOOP
        sim.matrix <- rbind(sim.matrix, sim.matrix.temp)
@@ -129,7 +127,7 @@ e.low.lim=NULL, e.up.lim=NULL, e.OR=NULL, i.OR=NULL, b.OR=NULL, ph.error=NULL)
    sim.matrix <- cbind(1:totalnumrows, sim.matrix)
 
    # NAME THE COLUMNS OF THE MATRIX AND RETURN IT AS A DATAFRAMEDATAFRAME
-   colnames(sim.matrix) <- c("id", "phenotype", "genotype", "allele.A", "allele.B", "environment", "interaction")
+   colnames(sim.matrix) <- c("id", "phenotype", "genotype1", "allele.A1", "allele.B1", "genotype2", "allele.A2", "allele.B2", "interaction")
    mm <- list(data=data.frame(sim.matrix), allowed.sample.size.exceeded=sample.size.excess)
 }
 

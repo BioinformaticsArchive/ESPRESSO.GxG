@@ -1,8 +1,8 @@
-\name{glm.analysis.GxE}
-\alias{glm.analysis.GxE}
+\name{glm.analysis.GxG}
+\alias{glm.analysis.GxG}
 \title{Carries out regression analysis}
 \usage{
-glm.analysis.GxE(pheno.model = NULL, observed.data = NULL)
+glm.analysis.GxG(pheno.model = NULL, observed.data = NULL)
 }
 \arguments{
   \item{pheno.model}{Type of outcome; 0=binary and
@@ -17,7 +17,7 @@ z-statistic of each of the covariates
 }
 \description{
 Fits a conventional unconditional logistic regression model
-with a binary or continuous phentype as outcome and the
+with a binary or continuous phenotype as outcome and the
 genetic, environmental, interaction determinants as
 covariates.
 }
